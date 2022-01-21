@@ -3,7 +3,7 @@ import Vue from 'vue/dist/vue.js';
 import './styles.scss';
 import {modulo} from './utils';
 import wheel from './wheel-config';
-import {drawShape, drawTile, makeTile, makeWheelTiles, rotateWheel} from './wheel-service';
+import {drawShape, drawShapeInformation, drawTile, makeTile, makeWheelTiles, rotateWheel} from './wheel-service';
 
 let wheelSize;
 let wheelTiles = makeWheelTiles(wheel);
@@ -61,6 +61,7 @@ const sketch = (p5: P5) => {
             wheelTiles.tilesOuterRing,
             p5
         );
+        drawShapeInformation(appSettings.shapePosition, wheel, p5);
     };
 
     p5.keyPressed = () => {

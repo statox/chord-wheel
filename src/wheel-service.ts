@@ -2,6 +2,10 @@ import P5 from 'p5';
 import {Wheel, Ring, Tile, WheelTiles} from './wheel-types';
 import {modulo} from './utils';
 
+/*
+ * TODO: Work out the math to replace the magic numbers by accurate coefficients
+ */
+
 export const makeTile = (ring: Ring, labelIndex: number): Tile => {
     if (labelIndex < 0 || labelIndex >= ring.labels.length) {
         throw new Error(`OOB labelIndex: ${labelIndex}`);
@@ -16,7 +20,6 @@ export const makeTile = (ring: Ring, labelIndex: number): Tile => {
     position.rotate(cellAngle);
 
     const offsetAngle = cellSize / 2;
-    // TODO: Work out the math to replace 1.02 by the real coefficient
     const vertices = [
         position.copy().rotate(-offsetAngle).setMag(innerDiameter), // Bottom left
         position.copy().rotate(-offsetAngle).setMag(outerDiameter), // Top left
@@ -108,8 +111,62 @@ export const drawShape = (
         p5.noStroke();
         p5.fill(0);
         p5.textSize(0.05);
+        p5.textStyle(p5.BOLD);
         p5.text(tile.label, tile.center.x - p5.textWidth(tile.label) / 2, tile.center.y);
+        p5.textStyle(p5.NORMAL);
     }
+};
+
+export const drawShapeInformation = (position: number, wheel: Wheel, p5: P5) => {
+    p5.textSize(0.04);
+    p5.push();
+    p5.rotate(position * ((2 * p5.PI) / 12));
+
+    const referencePos = new P5.Vector();
+    referencePos.x = 0;
+    referencePos.y = -wheel.innerRing.innerDiameter;
+
+    // Key marker
+    const keyText = 'Key';
+    p5.text(keyText, referencePos.x - p5.textWidth(keyText) / 2, referencePos.y * 0.8);
+
+    // Degrees markers
+    const markerPos = new P5.Vector();
+    markerPos.y = -wheel.innerRing.innerDiameter * 1.04;
+    const Itext = 'I';
+    p5.text(Itext, markerPos.x - p5.textWidth(Itext) / 2, markerPos.y);
+
+    p5.push();
+    p5.rotate(-(2 * p5.PI) / 12);
+    const IVtext = 'IV';
+    p5.text(IVtext, markerPos.x - p5.textWidth(IVtext) / 2, markerPos.y);
+    p5.pop();
+
+    p5.push();
+    p5.rotate((2 * p5.PI) / 12);
+    const Vtext = 'V';
+    p5.text(Vtext, markerPos.x - p5.textWidth(Vtext) / 2, markerPos.y);
+    p5.pop();
+
+    markerPos.y = -wheel.middleRing.innerDiameter * 1.02;
+    const IIItext = 'III';
+    p5.text(IIItext, markerPos.x - p5.textWidth(IIItext) / 2, markerPos.y);
+
+    p5.push();
+    p5.rotate(-(2 * p5.PI) / 24);
+    const IItext = 'II';
+    p5.text(IItext, markerPos.x - p5.textWidth(IItext) / 2, markerPos.y);
+    p5.pop();
+
+    p5.push();
+    const VItext = 'V I';
+    p5.rotate((2 * p5.PI) / 24);
+    p5.text(VItext, markerPos.x - p5.textWidth(VItext) / 2, markerPos.y);
+    p5.pop();
+
+    const VIItext = 'V II°';
+    markerPos.y = -wheel.outerRing.innerDiameter * 1.015;
+    p5.text(VIItext, markerPos.x - p5.textWidth(VIItext) / 2, markerPos.y);
 };
 
 export const rotateWheel = (wheel: Wheel, clockwise: boolean) => {

@@ -3,7 +3,7 @@ import {Wheel} from './wheel-types';
 const PI = Math.PI;
 const wheel: Wheel = {
     outerRing: {
-        labels: ['B', 'F#°', 'C#°', 'G#°', 'D#°', 'A#°', 'F°', 'C°', 'G°', 'D°', 'A°', 'E°'],
+        labels: ['B°', 'F#°', 'C#°', 'G#°', 'D#°', 'A#°', 'F°', 'C°', 'G°', 'D°', 'A°', 'E°'],
         cellSize: (2 * PI) / 48,
         ratio: 4,
         innerDiameter: 0.82,
