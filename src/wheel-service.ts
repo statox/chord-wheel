@@ -131,11 +131,26 @@ export const drawShapeInformation = (position: number, wheel: Wheel, p5: P5) => 
     referencePos.x = 0;
     referencePos.y = -wheel.innerRing.innerDiameter;
 
-    // Key marker
+    /*
+     * Key marker
+     */
     const arrowText = '▲';
     p5.text(arrowText, referencePos.x - p5.textWidth(arrowText) / 2, referencePos.y * 0.9);
     const keyText = 'Key';
     p5.text(keyText, referencePos.x - p5.textWidth(keyText) / 2, referencePos.y * 0.75);
+
+    /*
+     * Signature markers
+     */
+    const signaturePos = new P5.Vector();
+    const signatures = ['♯', '♯♯', '♯♯♯', '♯♯♯♯', '7♭/5♯', '6♭/6♯', '5♭/7♯', '♭♭♭♭', '♭♭♭', '♭♭', '♭'];
+    signaturePos.y = -wheel.innerRing.innerDiameter * 0.85;
+    p5.push();
+    for (const signature of signatures) {
+        p5.rotate((2 * p5.PI) / 12);
+        p5.text(signature, -p5.textWidth(signature) / 2, signaturePos.y);
+    }
+    p5.pop();
 
     /*
      * Degrees markers

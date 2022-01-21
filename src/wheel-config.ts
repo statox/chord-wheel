@@ -2,7 +2,7 @@ import {Wheel} from './wheel-types';
 
 const PI = Math.PI;
 const wheel: Wheel = {
-    position: 0
+    position: 0,
     outerRing: {
         labels: ['B°', 'F♯°', 'C♯°', 'G♯°', 'D♯°', 'A♯°', 'F°', 'C°', 'G°', 'D°', 'A°', 'E°'],
         cellSize: (2 * PI) / 48,
