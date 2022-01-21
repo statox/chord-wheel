@@ -199,7 +199,7 @@ export const drawShapeInformation = (position: number, wheel: Wheel, p5: P5) => 
     typePos.y = -wheel.outerRing.outerDiameter * 0.96;
 
     p5.text(VIItext, markerPos.x - p5.textWidth(VIItext) / 2, markerPos.y);
-    const tVIItext = 'm7b5';
+    const tVIItext = 'm7♭5';
     p5.text(tVIItext, typePos.x - p5.textWidth(tVIItext) / 2, typePos.y);
 };
 
