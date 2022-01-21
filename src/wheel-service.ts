@@ -234,3 +234,9 @@ export const rotateWheel = (wheel: Wheel, clockwise: boolean) => {
     wheel.middleRing.labels.push(wheel.middleRing.labels.shift());
     wheel.outerRing.labels.push(wheel.outerRing.labels.shift());
 };
+
+export const drawSVGTest = (img: P5.Image, wheelSize: number, p5: P5) => {
+    // p5.scale(0.3);
+    // p5.scale(0.001);
+    p5.image(img, -img.width / 2, -img.height / 2);
+};
