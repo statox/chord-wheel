@@ -123,51 +123,84 @@ export const drawShapeInformation = (position: number, wheel: Wheel, p5: P5) => 
     p5.push();
     p5.rotate(position * ((2 * p5.PI) / 12));
 
+    p5.fill(250);
+    p5.circle(0, 0, wheel.innerRing.innerDiameter * 2);
+    p5.fill(0);
+
     const referencePos = new P5.Vector();
     referencePos.x = 0;
     referencePos.y = -wheel.innerRing.innerDiameter;
 
     // Key marker
+    const arrowText = '▲';
+    p5.text(arrowText, referencePos.x - p5.textWidth(arrowText) / 2, referencePos.y * 0.9);
     const keyText = 'Key';
-    p5.text(keyText, referencePos.x - p5.textWidth(keyText) / 2, referencePos.y * 0.8);
+    p5.text(keyText, referencePos.x - p5.textWidth(keyText) / 2, referencePos.y * 0.75);
 
-    // Degrees markers
+    /*
+     * Degrees markers
+     */
+    // I
     const markerPos = new P5.Vector();
     markerPos.y = -wheel.innerRing.innerDiameter * 1.04;
     const Itext = 'I';
     p5.text(Itext, markerPos.x - p5.textWidth(Itext) / 2, markerPos.y);
 
+    const typePos = new P5.Vector();
+    typePos.y = -wheel.innerRing.outerDiameter * 0.9;
+    const tItext = 'maj7,maj9';
+    p5.text(tItext, typePos.x - p5.textWidth(tItext) / 2, typePos.y);
+
+    // IV
     p5.push();
     p5.rotate(-(2 * p5.PI) / 12);
     const IVtext = 'IV';
     p5.text(IVtext, markerPos.x - p5.textWidth(IVtext) / 2, markerPos.y);
+    const tIVtext = 'maj7,maj9';
+    p5.text(tIVtext, typePos.x - p5.textWidth(tIVtext) / 2, typePos.y);
     p5.pop();
 
+    // V
     p5.push();
     p5.rotate((2 * p5.PI) / 12);
     const Vtext = 'V';
     p5.text(Vtext, markerPos.x - p5.textWidth(Vtext) / 2, markerPos.y);
+    const tVtext = '7,9,11,sus4,13';
+    p5.text(tVtext, typePos.x - p5.textWidth(tVtext) / 2, typePos.y);
     p5.pop();
 
     markerPos.y = -wheel.middleRing.innerDiameter * 1.02;
+    typePos.y = -wheel.middleRing.outerDiameter * 0.95;
+
+    // III
     const IIItext = 'III';
     p5.text(IIItext, markerPos.x - p5.textWidth(IIItext) / 2, markerPos.y);
+    const tIIItext = 'm7';
+    p5.text(tIIItext, typePos.x - p5.textWidth(tIIItext) / 2, typePos.y);
 
     p5.push();
     p5.rotate(-(2 * p5.PI) / 24);
     const IItext = 'II';
     p5.text(IItext, markerPos.x - p5.textWidth(IItext) / 2, markerPos.y);
+    const tIItext = 'm7,m9';
+    p5.text(tIItext, typePos.x - p5.textWidth(tIItext) / 2, typePos.y);
     p5.pop();
 
     p5.push();
     const VItext = 'V I';
     p5.rotate((2 * p5.PI) / 24);
     p5.text(VItext, markerPos.x - p5.textWidth(VItext) / 2, markerPos.y);
+    const tVItext = 'm7,m9';
+    p5.text(tVItext, typePos.x - p5.textWidth(tVItext) / 2, typePos.y);
     p5.pop();
 
     const VIItext = 'V II°';
     markerPos.y = -wheel.outerRing.innerDiameter * 1.015;
+    typePos.y = -wheel.outerRing.outerDiameter * 0.96;
+
     p5.text(VIItext, markerPos.x - p5.textWidth(VIItext) / 2, markerPos.y);
+    const tVIItext = 'm7b5';
+    p5.text(tVIItext, typePos.x - p5.textWidth(tVIItext) / 2, typePos.y);
 };
 
 export const rotateWheel = (wheel: Wheel, clockwise: boolean) => {
