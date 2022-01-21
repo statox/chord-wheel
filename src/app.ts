@@ -3,17 +3,7 @@ import Vue from 'vue/dist/vue.js';
 import './styles.scss';
 import {modulo} from './utils';
 import wheel from './wheel-config';
-import {
-    drawShape,
-    drawShapeInformation,
-    drawSVGTest,
-    drawTile,
-    makeTile,
-    makeWheelTiles,
-    rotateWheel
-} from './wheel-service';
-
-const testSVG = require('./assets/shape2.svg');
+import {drawShape, drawShapeInformation, drawTile, makeTile, makeWheelTiles, rotateWheel} from './wheel-service';
 
 let wheelSize;
 let wheelTiles = makeWheelTiles(wheel);
@@ -47,12 +37,6 @@ const sketch = (p5: P5) => {
         wheelSize = (minDimension / 2) * 0.75;
     }
 
-    let img;
-    p5.preload = () => {
-        img = p5.loadImage(testSVG);
-        console.log({img});
-    };
-
     // The sketch setup method
     p5.setup = () => {
         // Creating and positioning the canvas
@@ -78,8 +62,6 @@ const sketch = (p5: P5) => {
             p5
         );
         drawShapeInformation(appSettings.shapePosition, wheel, p5);
-        p5.scale((1 / wheelSize) * 1.15);
-        drawSVGTest(img, wheelSize, p5);
     };
 
     p5.keyPressed = () => {
