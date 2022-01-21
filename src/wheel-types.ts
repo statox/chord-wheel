@@ -9,6 +9,7 @@ export type Ring = {
 };
 
 export type Wheel = {
+    position: number;
     innerRing: Ring;
     middleRing: Ring;
     outerRing: Ring;

@@ -6,7 +6,7 @@ import {modulo} from './utils';
  * TODO: Work out the math to replace the magic numbers by accurate coefficients
  */
 
-export const makeTile = (ring: Ring, labelIndex: number): Tile => {
+export const makeTile = (ring: Ring, labelIndex: number, wheelPosition: number): Tile => {
     if (labelIndex < 0 || labelIndex >= ring.labels.length) {
         throw new Error(`OOB labelIndex: ${labelIndex}`);
     }
@@ -30,7 +30,8 @@ export const makeTile = (ring: Ring, labelIndex: number): Tile => {
     ];
     const center = position.copy().setMag(innerDiameter + (outerDiameter - innerDiameter) / 2);
 
-    const colorAngle = (labelIndex * 360) / ring.labels.length;
+    const offsetColor = (wheelPosition * 360) / ring.labels.length;
+    const colorAngle = (modulo(labelIndex + wheelPosition, ring.labels.length) * 360) / ring.labels.length;
 
     return {
         vertices,
@@ -42,9 +43,9 @@ export const makeTile = (ring: Ring, labelIndex: number): Tile => {
 };
 
 export const makeWheelTiles = (wheel: Wheel): WheelTiles => {
-    const tilesInnerRing = wheel.innerRing.labels.map((_, i) => makeTile(wheel.innerRing, i));
-    const tilesMiddleRing = wheel.middleRing.labels.map((_, i) => makeTile(wheel.middleRing, i));
-    const tilesOuterRing = wheel.outerRing.labels.map((_, i) => makeTile(wheel.outerRing, i));
+    const tilesInnerRing = wheel.innerRing.labels.map((_, i) => makeTile(wheel.innerRing, i, wheel.position));
+    const tilesMiddleRing = wheel.middleRing.labels.map((_, i) => makeTile(wheel.middleRing, i, wheel.position * 2));
+    const tilesOuterRing = wheel.outerRing.labels.map((_, i) => makeTile(wheel.outerRing, i, wheel.position));
 
     return {
         tilesInnerRing,
@@ -171,6 +172,7 @@ export const drawShapeInformation = (position: number, wheel: Wheel, p5: P5) => 
 
 export const rotateWheel = (wheel: Wheel, clockwise: boolean) => {
     if (clockwise) {
+        wheel.position--;
         wheel.innerRing.labels.unshift(wheel.innerRing.labels.pop());
         wheel.middleRing.labels.unshift(wheel.middleRing.labels.pop());
         wheel.middleRing.labels.unshift(wheel.middleRing.labels.pop());
@@ -178,6 +180,7 @@ export const rotateWheel = (wheel: Wheel, clockwise: boolean) => {
         return;
     }
 
+    wheel.position++;
     wheel.innerRing.labels.push(wheel.innerRing.labels.shift());
     wheel.middleRing.labels.push(wheel.middleRing.labels.shift());
     wheel.middleRing.labels.push(wheel.middleRing.labels.shift());
