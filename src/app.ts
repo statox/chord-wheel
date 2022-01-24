@@ -1,5 +1,5 @@
 import P5 from 'p5';
-// import Vue from 'vue/dist/vue.js';
+import Vue from 'vue/dist/vue.js';
 import './styles.scss';
 import {modulo} from './utils';
 import wheel from './wheel-config';
@@ -21,16 +21,14 @@ const rotateWheelCounterClockwise = () => {
     wheelTiles = makeWheelTiles(wheel);
 };
 
-/*
- * const app = new Vue({
- *     el: '#controlsDiv',
- *     data: appSettings,
- *     methods: {
- *         rotateWheelClockwise,
- *         rotateWheelCounterClockwise
- *     }
- * });
- */
+const app = new Vue({
+    el: '#controlsDiv',
+    data: appSettings,
+    methods: {
+        rotateWheelClockwise,
+        rotateWheelCounterClockwise
+    }
+});
 
 const sketch = (p5: P5) => {
     function customResizeCanvas() {
