@@ -6,7 +6,7 @@ import wheel from './wheel-config';
 import {drawShape, drawShapeInformation, drawTile, makeTile, makeWheelTiles, rotateWheel} from './wheel-service';
 
 let wheelSize;
-let wheelTiles = makeWheelTiles(wheel);
+let wheelTiles;
 
 const appSettings = {
     shapePosition: 0
@@ -14,11 +14,11 @@ const appSettings = {
 
 const rotateWheelClockwise = () => {
     rotateWheel(wheel, true);
-    wheelTiles = makeWheelTiles(wheel);
+    wheelTiles = makeWheelTiles(wheel, wheelSize);
 };
 const rotateWheelCounterClockwise = () => {
     rotateWheel(wheel, false);
-    wheelTiles = makeWheelTiles(wheel);
+    wheelTiles = makeWheelTiles(wheel, wheelSize);
 };
 
 const app = new Vue({
@@ -35,6 +35,7 @@ const sketch = (p5: P5) => {
         const minDimension = Math.min(p5.windowWidth, p5.windowHeight);
         p5.resizeCanvas(minDimension * 0.8, minDimension * 0.8);
         wheelSize = (minDimension / 2) * 0.75;
+        wheelTiles = makeWheelTiles(wheel, wheelSize);
     }
 
     // The sketch setup method
@@ -50,7 +51,6 @@ const sketch = (p5: P5) => {
     p5.draw = () => {
         p5.background(50);
         p5.translate(p5.width / 2, p5.height / 2);
-        p5.scale(wheelSize);
         wheelTiles.tilesInnerRing.forEach((tile) => drawTile(tile, p5));
         wheelTiles.tilesMiddleRing.forEach((tile) => drawTile(tile, p5));
         wheelTiles.tilesOuterRing.forEach((tile) => drawTile(tile, p5));
@@ -61,7 +61,7 @@ const sketch = (p5: P5) => {
             wheelTiles.tilesOuterRing,
             p5
         );
-        drawShapeInformation(appSettings.shapePosition, wheel, p5);
+        drawShapeInformation(appSettings.shapePosition, wheel, wheelSize, p5);
     };
 
     p5.keyPressed = () => {

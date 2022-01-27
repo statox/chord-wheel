@@ -6,7 +6,7 @@ import {modulo} from './utils';
  * TODO: Work out the math to replace the magic numbers by accurate coefficients
  */
 
-export const makeTile = (ring: Ring, labelIndex: number, wheelPosition: number): Tile => {
+export const makeTile = (ring: Ring, labelIndex: number, wheelPosition: number, scale: number): Tile => {
     if (labelIndex < 0 || labelIndex >= ring.labels.length) {
         throw new Error(`OOB labelIndex: ${labelIndex}`);
     }
@@ -27,8 +27,11 @@ export const makeTile = (ring: Ring, labelIndex: number, wheelPosition: number):
         position.copy().rotate(offsetAngle).setMag(outerDiameter), // Top right
         position.copy().rotate(offsetAngle).setMag(innerDiameter), // Bottom right
         position.copy().setMag(innerDiameter * 1.02) // Bottom middle
-    ];
-    const center = position.copy().setMag(innerDiameter + (outerDiameter - innerDiameter) / 2);
+    ].map((v) => v.mult(scale));
+    const center = position
+        .copy()
+        .setMag(innerDiameter + (outerDiameter - innerDiameter) / 2)
+        .mult(scale);
 
     const offsetColor = (wheelPosition * 360) / ring.labels.length;
     const colorAngle = (modulo(labelIndex + wheelPosition, ring.labels.length) * 360) / ring.labels.length;
@@ -42,10 +45,12 @@ export const makeTile = (ring: Ring, labelIndex: number, wheelPosition: number):
     };
 };
 
-export const makeWheelTiles = (wheel: Wheel): WheelTiles => {
-    const tilesInnerRing = wheel.innerRing.labels.map((_, i) => makeTile(wheel.innerRing, i, wheel.position));
-    const tilesMiddleRing = wheel.middleRing.labels.map((_, i) => makeTile(wheel.middleRing, i, wheel.position * 2));
-    const tilesOuterRing = wheel.outerRing.labels.map((_, i) => makeTile(wheel.outerRing, i, wheel.position));
+export const makeWheelTiles = (wheel: Wheel, scale: number): WheelTiles => {
+    const tilesInnerRing = wheel.innerRing.labels.map((_, i) => makeTile(wheel.innerRing, i, wheel.position, scale));
+    const tilesMiddleRing = wheel.middleRing.labels.map((_, i) =>
+        makeTile(wheel.middleRing, i, wheel.position * 2, scale)
+    );
+    const tilesOuterRing = wheel.outerRing.labels.map((_, i) => makeTile(wheel.outerRing, i, wheel.position, scale));
 
     return {
         tilesInnerRing,
@@ -55,7 +60,7 @@ export const makeWheelTiles = (wheel: Wheel): WheelTiles => {
 };
 
 export const drawTile = (tile: Tile, p5: P5) => {
-    p5.strokeWeight(0.01);
+    p5.strokeWeight(2);
     p5.stroke([0, 0, 0, 0.5]);
     p5.fill(`hsb(${tile.colorHue}, 50%, 60%)`);
 
@@ -71,7 +76,7 @@ export const drawTile = (tile: Tile, p5: P5) => {
 
     p5.noStroke();
     p5.fill(0);
-    p5.textSize(0.05);
+    p5.textSize(13);
     p5.text(tile.label, tile.center.x - p5.textWidth(tile.label) / 2, tile.center.y);
 };
 
@@ -94,9 +99,8 @@ export const drawShape = (
         tilesOuterRing[modulo(position, tilesOuterRing.length)]
     ];
 
-    // p5.scale(1.1);
     for (const tile of selectedTiles) {
-        p5.strokeWeight(0.01);
+        p5.strokeWeight(3);
         p5.stroke([0, 0, 0, 1]);
         p5.fill(`hsb(${tile.colorHue}, 60%, 90%)`);
         const [bottomLeft, topLeft, topMiddle, topRight, bottomRight, bottomMiddle] = tile.vertices;
@@ -111,25 +115,25 @@ export const drawShape = (
 
         p5.noStroke();
         p5.fill(0);
-        p5.textSize(0.05);
+        p5.textSize(13);
         p5.textStyle(p5.BOLD);
         p5.text(tile.label, tile.center.x - p5.textWidth(tile.label) / 2, tile.center.y);
         p5.textStyle(p5.NORMAL);
     }
 };
 
-export const drawShapeInformation = (position: number, wheel: Wheel, p5: P5) => {
-    p5.textSize(0.04);
+export const drawShapeInformation = (position: number, wheel: Wheel, scale: number, p5: P5) => {
+    p5.textSize(10);
     p5.push();
     p5.rotate(position * ((2 * p5.PI) / 12));
 
     p5.fill(250);
-    p5.circle(0, 0, wheel.innerRing.innerDiameter * 2);
+    p5.circle(0, 0, wheel.innerRing.innerDiameter * 2 * scale);
     p5.fill(0);
 
     const referencePos = new P5.Vector();
     referencePos.x = 0;
-    referencePos.y = -wheel.innerRing.innerDiameter;
+    referencePos.y = -wheel.innerRing.innerDiameter * scale;
 
     /*
      * Key marker
@@ -144,7 +148,7 @@ export const drawShapeInformation = (position: number, wheel: Wheel, p5: P5) => 
      */
     const signaturePos = new P5.Vector();
     const signatures = ['♯', '♯♯', '♯♯♯', '♯♯♯♯', '7♭/5♯', '6♭/6♯', '5♭/7♯', '♭♭♭♭', '♭♭♭', '♭♭', '♭'];
-    signaturePos.y = -wheel.innerRing.innerDiameter * 0.85;
+    signaturePos.y = -wheel.innerRing.innerDiameter * 0.85 * scale;
     p5.push();
     for (const signature of signatures) {
         p5.rotate((2 * p5.PI) / 12);
@@ -157,12 +161,12 @@ export const drawShapeInformation = (position: number, wheel: Wheel, p5: P5) => 
      */
     // I
     const markerPos = new P5.Vector();
-    markerPos.y = -wheel.innerRing.innerDiameter * 1.04;
+    markerPos.y = -wheel.innerRing.innerDiameter * 1.04 * scale;
     const Itext = 'I';
     p5.text(Itext, markerPos.x - p5.textWidth(Itext) / 2, markerPos.y);
 
     const typePos = new P5.Vector();
-    typePos.y = -wheel.innerRing.outerDiameter * 0.9;
+    typePos.y = -wheel.innerRing.outerDiameter * 0.9 * scale;
     const tItext = 'maj7,maj9';
     p5.text(tItext, typePos.x - p5.textWidth(tItext) / 2, typePos.y);
 
@@ -184,8 +188,8 @@ export const drawShapeInformation = (position: number, wheel: Wheel, p5: P5) => 
     p5.text(tVtext, typePos.x - p5.textWidth(tVtext) / 2, typePos.y);
     p5.pop();
 
-    markerPos.y = -wheel.middleRing.innerDiameter * 1.02;
-    typePos.y = -wheel.middleRing.outerDiameter * 0.95;
+    markerPos.y = -wheel.middleRing.innerDiameter * 1.02 * scale;
+    typePos.y = -wheel.middleRing.outerDiameter * 0.95 * scale;
 
     // III
     const IIItext = 'III';
@@ -210,8 +214,8 @@ export const drawShapeInformation = (position: number, wheel: Wheel, p5: P5) => 
     p5.pop();
 
     const VIItext = 'V II°';
-    markerPos.y = -wheel.outerRing.innerDiameter * 1.015;
-    typePos.y = -wheel.outerRing.outerDiameter * 0.96;
+    markerPos.y = -wheel.outerRing.innerDiameter * 1.015 * scale;
+    typePos.y = -wheel.outerRing.outerDiameter * 0.96 * scale;
 
     p5.text(VIItext, markerPos.x - p5.textWidth(VIItext) / 2, markerPos.y);
     const tVIItext = 'm7♭5';
