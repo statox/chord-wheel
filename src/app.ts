@@ -78,6 +78,25 @@ const sketch = (p5: P5) => {
         }
     };
 
+    let swipeBeginX;
+    p5.touchStarted = (event) => {
+        swipeBeginX = p5.mouseX;
+    };
+    p5.touchEnded = (event) => {
+        if (!swipeBeginX) {
+            return;
+        }
+        if (Math.abs(p5.mouseX - swipeBeginX) < 100) {
+            return;
+        }
+        const clockwise = p5.mouseX > swipeBeginX;
+        if (clockwise) {
+            appSettings.shapePosition = modulo(appSettings.shapePosition + 1, wheelTiles.tilesInnerRing.length);
+        } else {
+            appSettings.shapePosition = modulo(appSettings.shapePosition - 1, wheelTiles.tilesInnerRing.length);
+        }
+    };
+
     p5.windowResized = () => {
         customResizeCanvas();
     };

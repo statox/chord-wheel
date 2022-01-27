@@ -11,17 +11,20 @@
         <h1>Chord wheel</h1>
         <div oncontextmenu="return false;" id="canvasDiv"></div>
         <div id="controlsDiv">
-            <span>
+            <div>
                 <button v-on:click="shapePosition -= 1">counter-clockwise</button>
                 Shape rotation
                 <button v-on:click="shapePosition += 1">clockwise</button>
-            </span>
+            </div>
+            <div>
+                <p>On mobile you can also swipe left and right to rotate the shape</p>
+            </div>
             <br />
-            <span>
+            <div>
                 <button v-on:click="rotateWheelCounterClockwise">counter-clockwise</button>
                 Wheel rotation
                 <button v-on:click="rotateWheelClockwise">clockwise</button>
-            </span>
+            </div>
         </div>
     </div>
     <script src="src/app.ts"></script>
