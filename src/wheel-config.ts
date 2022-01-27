@@ -2,6 +2,9 @@ import {Wheel} from './wheel-types';
 
 const PI = Math.PI;
 const wheel: Wheel = {
+    // scale is used to scale the tiles at the right size for the screen
+    // It is initialized at 1 but customResizeCanvas() update the value when the app starts
+    scale: 1,
     position: 0,
     outerRing: {
         labels: ['B°', 'F♯°', 'C♯°', 'G♯°', 'D♯°', 'A♯°', 'F°', 'C°', 'G°', 'D°', 'A°', 'E°'],

@@ -5,7 +5,6 @@ import {modulo} from './utils';
 import wheel from './wheel-config';
 import {drawShape, drawShapeInformation, drawTile, makeTile, makeWheelTiles, rotateWheel} from './wheel-service';
 
-let wheelSize;
 let wheelTiles;
 
 const appSettings = {
@@ -14,11 +13,11 @@ const appSettings = {
 
 const rotateWheelClockwise = () => {
     rotateWheel(wheel, true);
-    wheelTiles = makeWheelTiles(wheel, wheelSize);
+    wheelTiles = makeWheelTiles(wheel);
 };
 const rotateWheelCounterClockwise = () => {
     rotateWheel(wheel, false);
-    wheelTiles = makeWheelTiles(wheel, wheelSize);
+    wheelTiles = makeWheelTiles(wheel);
 };
 
 const app = new Vue({
@@ -34,8 +33,8 @@ const sketch = (p5: P5) => {
     function customResizeCanvas() {
         const minDimension = Math.min(p5.windowWidth, p5.windowHeight);
         p5.resizeCanvas(minDimension * 0.8, minDimension * 0.8);
-        wheelSize = (minDimension / 2) * 0.75;
-        wheelTiles = makeWheelTiles(wheel, wheelSize);
+        wheel.scale = (minDimension / 2) * 0.75;
+        wheelTiles = makeWheelTiles(wheel);
     }
 
     // The sketch setup method
@@ -61,7 +60,7 @@ const sketch = (p5: P5) => {
             wheelTiles.tilesOuterRing,
             p5
         );
-        drawShapeInformation(appSettings.shapePosition, wheel, wheelSize, p5);
+        drawShapeInformation(appSettings.shapePosition, wheel, p5);
     };
 
     p5.keyPressed = () => {

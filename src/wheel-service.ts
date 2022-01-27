@@ -45,7 +45,8 @@ export const makeTile = (ring: Ring, labelIndex: number, wheelPosition: number, 
     };
 };
 
-export const makeWheelTiles = (wheel: Wheel, scale: number): WheelTiles => {
+export const makeWheelTiles = (wheel: Wheel): WheelTiles => {
+    const {scale} = wheel;
     const tilesInnerRing = wheel.innerRing.labels.map((_, i) => makeTile(wheel.innerRing, i, wheel.position, scale));
     const tilesMiddleRing = wheel.middleRing.labels.map((_, i) =>
         makeTile(wheel.middleRing, i, wheel.position * 2, scale)
@@ -122,7 +123,8 @@ export const drawShape = (
     }
 };
 
-export const drawShapeInformation = (position: number, wheel: Wheel, scale: number, p5: P5) => {
+export const drawShapeInformation = (position: number, wheel: Wheel, p5: P5) => {
+    const {scale} = wheel;
     p5.textSize(10);
     p5.push();
     p5.rotate(position * ((2 * p5.PI) / 12));
