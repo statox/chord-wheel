@@ -7,4 +7,4 @@ var e,t=arguments[3];!function(r){"object"==typeof exports&&"undefined"!=typeof 
 },{}],"t57X":[function(require,module,exports) {
 "use strict";var e=this&&this.__importDefault||function(e){return e&&e.__esModule?e:{default:e}};Object.defineProperty(exports,"__esModule",{value:!0});var t=e(require("p5"));require("./styles.scss");var r=function(e){e.setup=function(){e.createCanvas(1,1).parent("canvasDiv")}};new t.default(r);
 },{"p5":"SOQY","./styles.scss":"aiJW"}]},{},["t57X"], null)
-//# sourceMappingURL=/chord-wheel/circle-of-fifths-app.be87469d.js.map
+//# sourceMappingURL=circle-of-fifths-app.be87469d.js.map
