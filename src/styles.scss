@@ -14,9 +14,18 @@ button {
     font-size: 30px;
 }
 
+a {
+    color: chocolate;
+}
+
 .container {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+}
+
+.navigationButton {
+    font-size: 25px;
+    color: #bbb2b2;
 }
