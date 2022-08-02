@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "parcel index.html",
     "build": "parcel build index.html",
-    "build-ci": "parcel build index.html --public-url /chord-wheel/"
+    "build-ci": "parcel build index.html --public-url ./"
   },
   "dependencies": {
     "@types/p5": "1.3.3",
