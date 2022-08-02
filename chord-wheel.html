@@ -1,0 +1,31 @@
+<html>
+
+<head>
+    <title>Chord wheel</title>
+    <meta charset="UTF-8" />
+    <meta name="description" content="The Chord Wheel">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Chord wheel</h1>
+        <p><a class="navigationButton" href="/circle-of-fifths.html">Go to Circle of fifths</a></p>
+        <div oncontextmenu="return false;" id="canvasDiv"></div>
+        <div id="controlsDiv">
+            <p>
+                <button v-on:click="shapePosition -= 1">counter-clockwise</button>
+                Shape rotation
+                <button v-on:click="shapePosition += 1">clockwise</button>
+            </p>
+            <p>
+                <button v-on:click="rotateWheelCounterClockwise">counter-clockwise</button>
+                Wheel rotation
+                <button v-on:click="rotateWheelClockwise">clockwise</button>
+            </p>
+            <p>On mobile you can also swipe left and right to rotate the shape</p>
+        </div>
+    </div>
+    <script src="src/chord-wheel-app.ts"></script>
+</body>
+
+</html>
